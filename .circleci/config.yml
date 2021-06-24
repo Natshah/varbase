@@ -129,6 +129,7 @@ commands:
       ## Build Varbase with the composer and Install with drush.
       - run:
           name: Build Varbase with the composer and Install with drush
+          no_output_timeout: 30m
           command: |
             cd /var/www/html/test/varbase/
             composer install --no-interaction -vvv
