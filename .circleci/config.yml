@@ -139,7 +139,7 @@ commands:
           no_output_timeout: 30m
           command: |
             sudo rm -rf /var/www/html/test/varbase
-            composer create-project vardot/varbase-project:9.0.x-dev  --stability dev --no-interaction
+            composer create-project vardot/varbase-project:9.0.x-dev /var/www/html/test/varbase --stability dev --no-interaction
             composer require drupal/core-dev:~9.0 drush/drush:~10.0 drupal/drupal-extension:~4.0 emuse/behat-html-formatter:^0.2.0
             sudo chmod 777 -R /var/www/html/test/varbase
             mysql -h 127.0.0.1 -uuser -ppassw0rd -e "DROP DATABASE IF EXISTS test_varbase;CREATE DATABASE test_varbase;"
