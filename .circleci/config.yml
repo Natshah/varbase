@@ -138,11 +138,11 @@ commands:
           name: Build Varbase with the composer and Install with drush
           no_output_timeout: 30m
           command: |
-            composer config --global github-oauth.github.com $GITHUB_TOKEN
             sudo rm -rf /var/www/html/test/varbase
             cd /var/www/html/test
             composer create-project vardot/varbase-project:9.0.x-dev varbase --stability dev --no-interaction
             cd /var/www/html/test/varbase
+            composer config -g github-oauth.github.com $GITHUB_TOKEN
             composer require "drupal/core-dev:~9.0 drush/drush:~10.0 drupal/drupal-extension:~4.0 emuse/behat-html-formatter:^0.2.0"
             sudo chmod 777 -R /var/www/html/test/varbase
             mysql -h 127.0.0.1 -uuser -ppassw0rd -e "DROP DATABASE IF EXISTS test_varbase;CREATE DATABASE test_varbase;"
