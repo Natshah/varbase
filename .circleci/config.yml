@@ -142,7 +142,11 @@ commands:
             cd /var/www/html/test
             composer config -g github-oauth.github.com $GITHUB_TOKEN
             composer create-project vardot/varbase-project:9.0.x-dev varbase --stability dev --no-interaction
-            sudo chmod 777 -R /var/www/html/test/varbase
+            cd /var/www/html/test/varbase
+            composer require drupal/core-dev:*
+            composer require drush/drush:~10.0
+            composer require drupal/drupal-extension:~4.0
+            composer require emuse/behat-html-formatter:^0.2.0
             mysql -h 127.0.0.1 -uuser -ppassw0rd -e "DROP DATABASE IF EXISTS test_varbase;CREATE DATABASE test_varbase;"
             cd /var/www/html/test/varbase/docroot
             ../bin/drush site-install varbase --yes --site-name='Varbase Test' --account-name=webmaster --account-pass=dD.123123ddd --account-mail=webmaster@vardot.com --db-url="mysql://user:passw0rd@127.0.0.1/test_varbase" varbase_multilingual_configuration.enable_multilingual=true varbase_extra_components.vmi=true varbase_extra_components.varbase_heroslider_media=true varbase_extra_components.varbase_carousels=true varbase_extra_components.varbase_search=true varbase_extra_components.varbase_blog=true varbase_extra_components.varbase_landing=true varbase_extra_components.varbase_auth=true
