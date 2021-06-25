@@ -107,15 +107,15 @@ commands:
           name: Build Varbase with the composer and Install with drush
           no_output_timeout: 30m
           command: |
-            sudo rm -rf /var/www/html/test/varbase
-            cd /var/www/html/test
+            cd /var/www/
             composer config -g github-oauth.github.com $GITHUB_TOKEN
-            composer create-project vardot/varbase-project:9.0.x-dev varbase --stability dev --no-interaction
+            mkdir /var/www/html/test
+            cd /var/www/html/test/
+            cp -r /home/circleci/project /var/www/html/test/varbase
             cd /var/www/html/test/varbase
-            composer require drupal/core-dev:*
-            composer require drush/drush:~10.0
-            composer require drupal/drupal-extension:~4.0
-            composer require emuse/behat-html-formatter:^0.2.0
+            composer install --stability dev --no-interaction
+            cp -r /home/circleci/project /var/www/html/test/varbase/docroot/profiles/varbase
+            sudo chmod 777 -R .;
             
       ## Point varbase.test at /var/www/html/test/varbase/docroot
       - run:
