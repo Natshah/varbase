@@ -14,7 +14,7 @@ commands:
           command: |
             sudo apt -qq update
             sudo apt -qqy upgrade
-            sudo apt -yqq install vim links lynx git diffutils htop curl wget p7zip-full unzip zip sed gcc g++ make libfreetype6-dev libonig-dev libpng-dev xvfb
+            sudo apt -yqq install vim links lynx git diffutils htop curl wget p7zip-full unzip zip sed gcc g++ make libfreetype6-dev libaio1 libaio-dev libonig-dev libpng-dev xvfb
 
       ## Setup Apache2 to PHP7.4
       - run:
@@ -61,7 +61,7 @@ commands:
             sudo sh -c "echo '[mysqld]' >> /etc/mysql/my.cnf"
             sudo sh -c "echo 'default-authentication-plugin=mysql_native_password' >> /etc/mysql/my.cnf"
             sudo sh -c "echo 'max_allowed_packet = 32M' >> /etc/mysql/my.cnf"
-            sudo service mysql restart
+            sudo service mysql start
 
       ## Install browser tools
       - browser-tools/install-browser-tools
