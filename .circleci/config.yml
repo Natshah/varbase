@@ -14,10 +14,7 @@ commands:
           command: |
             sudo apt-get -qq update
             sudo apt-get -qqy upgrade
-            sudo apt-get install -y software-properties-common
-            sudo apt-get -qq update
-            sudo apt-get -qqy upgrade
-            sudo apt-get -yqq install vim links lynx git diffutils htop curl wget p7zip-full unzip zip sed gcc g++ make libfreetype6-dev libonig-dev libjpeg62-turbo-dev libpng-dev xvfb default-mysql-client
+            sudo apt-get -yqq install vim links lynx git diffutils htop curl wget p7zip-full unzip zip sed gcc g++ make libfreetype6-dev libonig-dev libpng-dev xvfb default-mysql-client
 
       ## Setup Apache to point varbase.test at /var/www/html/test/varbase/docroot
       - run:
