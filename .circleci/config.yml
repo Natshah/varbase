@@ -30,10 +30,10 @@ commands:
             sudo add-apt-repository ppa:ondrej/php ;
             sudo apt update;
             sudo apt install -yqq apache2 php7.4 libapache2-mod-php7.4 php7.4-mbstring php7.4-mysql php7.4-xml php7.4-cgi php7.4-cli php7.4-common php7.4-curl php7.4-gd php7.4-imap php7.4-intl php7.4-pspell php7.4-sqlite3 php7.4-tidy php7.4-opcache php7.4-json php7.4-bz2 php7.4-readline php7.4-xmlrpc php7.4-enchant php7.4-xsl php-all-dev php7.4-zip php7.4-bcmath php-pear
-            a2enmod php7.4
-            update-alternatives --set php /usr/bin/php7.4
-            a2enmod headers rewrite env mime expires ssl
-            sudo cp /var/www/html/test/varbase/.circleci/env/varbase.test.conf /etc/apache2/sites-available/varbase.test.conf
+            sudo a2enmod php7.4
+            sudo update-alternatives --set php /usr/bin/php7.4
+            sudo a2enmod headers rewrite env mime expires ssl
+            sudo cp /home/circleci/project/.circleci/env/varbase.test.conf /etc/apache2/sites-available/varbase.test.conf
             sudo a2ensite varbase.test
             sudo service apache2 restart
             echo 127.0.0.1 varbase.test | sudo tee -a /etc/hosts
@@ -59,15 +59,6 @@ commands:
             done
             echo Failed waiting for MySQL && exit 1
 
-      ## Install browser tools
-      - browser-tools/install-browser-tools
-
-      ## Install Java.
-      - run:
-          name: Install Java
-          command: |
-            sudo apt-get update && sudo apt-get install -y openjdk-11-jre openjdk-11-jre-headless openjdk-11-jdk openjdk-11-jdk-headless
-
       ## List tool version.
       - run:
           name: List tool version
@@ -79,28 +70,11 @@ commands:
             chromedriver --version
             mysql --version
 
-      ## Configure and run the virtual display.
+      ## Install composer ~2.1
       - run:
-          name: Configure and run the virtual display
+          name: Install composer ~2.1
           command: |
-            export DISPLAY=:99
-            xvfb :99 -ac -screen 0 1366x768x24 &>/dev/null &
-            sleep 3
-
-      ## Run selenium standalone server.
-      - run:
-          name: Run selenium standalone server
-          command: |
-            if [[ ! -f /home/circleci/selenium-server-standalone-2.53.1.jar ]]; then wget -O /home/circleci/selenium-server-standalone-2.53.1.jar http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.1.jar; fi
-            cd /home/circleci/
-            java -jar selenium-server-standalone-2.53.1.jar -port 4445 > /home/circleci/selenium.log
-          background: true
-
-      ## Update the composer
-      - run:
-          name: Update the composer
-          command: |
-            sudo composer self-update --2
+            sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin/ --filename=composer --1;
             composer --version
 
       ## Build Varbase with the composer and Install with drush.
@@ -134,6 +108,33 @@ commands:
             ../bin/drush config-set system.performance js.preprocess 0 --yes
             ../bin/drush config-set system.logging error_level all --yes
             ../bin/drush cr
+            
+      ## Install browser tools
+      - browser-tools/install-browser-tools
+
+      ## Install Java.
+      - run:
+          name: Install Java
+          command: |
+            sudo apt-get update && sudo apt-get install -y openjdk-11-jre openjdk-11-jre-headless openjdk-11-jdk openjdk-11-jdk-headless
+            
+      ## Configure and run the virtual display.
+      - run:
+          name: Configure and run the virtual display
+          command: |
+            export DISPLAY=:99
+            xvfb :99 -ac -screen 0 1366x768x24 &>/dev/null &
+            sleep 3
+
+      ## Run selenium standalone server.
+      - run:
+          name: Run selenium standalone server
+          command: |
+            if [[ ! -f /home/circleci/selenium-server-standalone-2.53.1.jar ]]; then wget -O /home/circleci/selenium-server-standalone-2.53.1.jar http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.1.jar; fi
+            cd /home/circleci/
+            java -jar selenium-server-standalone-2.53.1.jar -port 4445 > /home/circleci/selenium.log
+          background: true
+
       ## Automated Functional Acceptance Testing - Step 1 init tests.
       - run:
           name: Automated Functional Acceptance Testing - Step 1 init tests
