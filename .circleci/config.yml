@@ -47,6 +47,19 @@ commands:
             echo -e "upload_max_filesize = 32M" | sudo tee /etc/php/7.4/apache2/php.ini > /dev/null
             echo -e "max_file_uploads = 40" | sudo tee /etc/php/7.4/apache2/php.ini > /dev/null
             sudo service apache2 restart
+            
+
+      ## Install node js, npm, yarn, and gulp
+      - run:
+          name: Install node js
+          command: |
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -
+            sudo apt install -y nodejs 
+            sudo apt install -y build-essential
+            sudo curl -L https://npmjs.com/install.sh | sh ;
+            sudo npm install -g yarn
+            sudo npm install gulp-cli -g ;
+            sudo npm install gulp -D ;
 
       ## Waiting for MySQL to be ready.
       - run:
@@ -66,6 +79,8 @@ commands:
           command: |
             php --version
             node --version
+            yarn --version
+            gulp --version
             java -version
             google-chrome --version
             chromedriver --version
