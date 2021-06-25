@@ -4,6 +4,19 @@ orbs:
 defaults: &defaults
   docker:
     - image: cimg/base:stable-20.04
+      auth:
+        username: mydockerhub-user
+        password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    - image: circleci/mysql:8.0.23
+      auth:
+        username: mydockerhub-user
+        password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      entrypoint: ['docker-entrypoint.sh', '--default-authentication-plugin=mysql_native_password']
+      environment:
+        MYSQL_ROOT_PASSWORD: 123___
+        MYSQL_DATABASE: test_varbase
+        MYSQL_USER: user
+        MYSQL_PASSWORD: 123___
 commands:
   varbase-build:
     steps:
@@ -39,6 +52,17 @@ commands:
             echo -e "display_startup_errors = 1" | sudo tee /etc/php/7.4/apache2/php.ini > /dev/null
             sudo service apache2 restart
             
+      ## Waiting for MySQL to be ready.
+      - run:
+          name: Waiting for MySQL to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z 127.0.0.1 3306 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for MySQL && exit 1
 
       ## Install node js, npm, yarn, and gulp
       - run:
@@ -51,16 +75,7 @@ commands:
             sudo npm install gulp -D ;
             
 
-      ## Install MySQL 8 server.
-      - run:
-          name: Install MySQL 8 server
-          command: |
-            sudo rm -rf /var/lib/mysql
-            sudo apt install -yqq  mysql-server mysql-client libmysqlclient-dev
-            echo -e "[client]" | sudo tee /etc/mysql/my.cnf > /dev/null
-            echo -e "user=root" | sudo tee /etc/mysql/my.cnf > /dev/null
-            echo -e "password=123___" | sudo tee /etc/mysql/my.cnf > /dev/null
-            sudo /etc/init.d/mysql restart
+
 
       ## Install browser tools
       - browser-tools/install-browser-tools
