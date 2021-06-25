@@ -70,10 +70,25 @@ commands:
               sleep 1
             done
             echo Failed waiting for MySQL && exit 1
-
-      ## List tool version.
+            
+      ## Install composer ~2.1
       - run:
-          name: List tool version
+          name: Install composer ~2.1
+          command: |
+            sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin/ --filename=composer --2;
+            
+      ## Install browser tools
+      - browser-tools/install-browser-tools
+
+      ## Install Java.
+      - run:
+          name: Install Java
+          command: |
+            sudo apt-get update && sudo apt-get install -y openjdk-11-jre openjdk-11-jre-headless openjdk-11-jdk openjdk-11-jdk-headless
+
+      ## List tools versions.
+      - run:
+          name: List tools versions
           command: |
             php --version
             node --version
@@ -83,13 +98,9 @@ commands:
             google-chrome --version
             chromedriver --version
             mysql --version
-
-      ## Install composer ~2.1
-      - run:
-          name: Install composer ~2.1
-          command: |
-            sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin/ --filename=composer --1;
             composer --version
+            google-chrome --version
+
 
       ## Build Varbase with the composer and Install with drush.
       - run:
@@ -139,15 +150,6 @@ commands:
             ../bin/drush config-set system.performance js.preprocess 0 --yes
             ../bin/drush config-set system.logging error_level all --yes
             ../bin/drush cr
-            
-      ## Install browser tools
-      - browser-tools/install-browser-tools
-
-      ## Install Java.
-      - run:
-          name: Install Java
-          command: |
-            sudo apt-get update && sudo apt-get install -y openjdk-11-jre openjdk-11-jre-headless openjdk-11-jdk openjdk-11-jdk-headless
             
       ## Configure and run the virtual display.
       - run:
