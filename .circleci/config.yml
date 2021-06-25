@@ -55,8 +55,6 @@ commands:
           command: |
             curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -
             sudo apt install -y nodejs 
-            sudo apt install -y build-essential
-            sudo curl -L https://npmjs.com/install.sh | sh ;
             sudo npm install -g yarn
             sudo npm install gulp-cli -g ;
             sudo npm install gulp -D ;
