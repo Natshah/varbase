@@ -104,10 +104,11 @@ commands:
 
       ## Build Varbase with the composer and Install with drush.
       - run:
-          name: Build Varbase with the composer and Install with drush
+          name: Build Varbase with the composer
           no_output_timeout: 30m
           command: |
             cd /var/www/
+            sudo chmod 777 -R .;
             composer config -g github-oauth.github.com $GITHUB_TOKEN
             mkdir /var/www/html/test
             cd /var/www/html/test/
