@@ -14,7 +14,7 @@ commands:
           command: |
             sudo apt -qq update
             sudo apt -qqy upgrade
-            sudo apt -yqq install vim links lynx git diffutils htop curl wget p7zip-full unzip zip sed gcc g++ make libfreetype6-dev libonig-dev libpng-dev xvfb default-mysql-client
+            sudo apt -yqq install vim links lynx git diffutils htop curl wget p7zip-full unzip zip sed gcc g++ make libfreetype6-dev libonig-dev libpng-dev xvfb
 
       ## Setup Apache2 to PHP7.4
       - run:
@@ -56,7 +56,7 @@ commands:
           name: Install MySQL 8 server
           command: |
             sudo apt install -yqq mysql-client mysql-server
-            sudo mysql -u root -e "use mysql;SET PASSWORD FOR 'root}'@'localhost' = '123___';update user set plugin="mysql_native_password" where User='root';flush privileges;"
+            sudo mysql -u root -e "use mysql;SET PASSWORD FOR 'root}'@'localhost' = '123___';update user set plugin="mysql_native_password" where User='root';flush privileges;quit"
             echo "[mysqld]" >> /etc/mysql/my.cnf
             echo "default-authentication-plugin=mysql_native_password" >> /etc/mysql/my.cnf
             echo "max_allowed_packet = 32M" >> /etc/mysql/my.cnf
