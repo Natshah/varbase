@@ -4,19 +4,6 @@ orbs:
 defaults: &defaults
   docker:
     - image: cimg/base:stable-20.04
-      auth:
-        username: mydockerhub-user
-        password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-    - image: circleci/mysql:8.0.23
-      auth:
-        username: mydockerhub-user
-        password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-      entrypoint: ['docker-entrypoint.sh', '--default-authentication-plugin=mysql_native_password']
-      environment:
-        MYSQL_ROOT_PASSWORD: rootpw
-        MYSQL_DATABASE: test_varbase
-        MYSQL_USER: user
-        MYSQL_PASSWORD: passw0rd
 commands:
   varbase-build:
     steps:
@@ -64,17 +51,16 @@ commands:
             sudo npm install gulp -D ;
             
 
-      ## Waiting for MySQL to be ready.
+      ## Install MySQL 8 server.
       - run:
-          name: Waiting for MySQL to be ready
+          name: Install MySQL 8 server
           command: |
-            for i in `seq 1 10`;
-            do
-              nc -z 127.0.0.1 3306 && echo Success && exit 0
-              echo -n .
-              sleep 1
-            done
-            echo Failed waiting for MySQL && exit 1
+            sudo apt install -yqq mysql-client mysql-server
+            sudo mysql -u root -e "use mysql;SET PASSWORD FOR 'root}'@'localhost' = '123___';update user set plugin="mysql_native_password" where User='root';flush privileges;"
+            echo "[mysqld]" >> /etc/mysql/my.cnf
+            echo "default-authentication-plugin=mysql_native_password" >> /etc/mysql/my.cnf
+            echo "max_allowed_packet = 32M" >> /etc/mysql/my.cnf
+            service mysql restart
 
       ## Install browser tools
       - browser-tools/install-browser-tools
@@ -134,8 +120,7 @@ commands:
             sudo a2ensite varbase.test
             echo 127.0.0.1 varbase.test | sudo tee -a /etc/hosts
             sudo service apache2 restart
-            
-            
+
       ## Install Varbase with drush.
       - run:
           name: Install Varbase with drush
@@ -143,7 +128,7 @@ commands:
           command: |
             mysql -h 127.0.0.1 -uuser -ppassw0rd -e "DROP DATABASE IF EXISTS test_varbase;CREATE DATABASE test_varbase;"
             cd /var/www/html/test/varbase/docroot
-            ../bin/drush site-install varbase --yes --site-name='Varbase Test' --account-name=webmaster --account-pass=dD.123123ddd --account-mail=webmaster@vardot.com --db-url="mysql://user:passw0rd@127.0.0.1/test_varbase" varbase_multilingual_configuration.enable_multilingual=true varbase_extra_components.vmi=true varbase_extra_components.varbase_heroslider_media=true varbase_extra_components.varbase_carousels=true varbase_extra_components.varbase_search=true varbase_extra_components.varbase_blog=true varbase_extra_components.varbase_landing=true varbase_extra_components.varbase_auth=true
+            ../bin/drush site-install varbase --yes --site-name='Varbase Test' --account-name=webmaster --account-pass=dD.123123ddd --account-mail=webmaster@vardot.com --db-url="mysql://root:123___@localhost/test_varbase" varbase_multilingual_configuration.enable_multilingual=true varbase_extra_components.vmi=true varbase_extra_components.varbase_heroslider_media=true varbase_extra_components.varbase_carousels=true varbase_extra_components.varbase_search=true varbase_extra_components.varbase_blog=true varbase_extra_components.varbase_landing=true varbase_extra_components.varbase_auth=true
             ../bin/drush pm-enable varbase_development --yes
             ../bin/drush pm-enable varbase_styleguide --yes
             ../bin/drush pm-enable varbase_landing --yes
