@@ -57,7 +57,7 @@ commands:
           command: |
             sudo rm -rf /var/lib/mysql
             sudo apt install -yqq  mysql-server mysql-client libmysqlclient-dev
-            sudo mysql -u root -e "use mysql;SET PASSWORD FOR 'root}'@'localhost' = '123___';update user set plugin="mysql_native_password" where User='root';flush privileges;"
+            sudo mysql -u root -e "use mysql;SET PASSWORD FOR 'root}'@'localhost' = '123___';update user set plugin='mysql_native_password' where User='root';flush privileges;"
             echo -e "[mysqld]" | sudo tee /etc/mysql/my.cnf > /dev/null
             echo -e "default-authentication-plugin=mysql_native_password" | sudo tee /etc/mysql/my.cnf > /dev/null
             echo -e "max_allowed_packet = 32M" | sudo tee /etc/mysql/my.cnf > /dev/null
