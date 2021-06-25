@@ -4,13 +4,13 @@ orbs:
 defaults: &defaults
   docker:
     - image: cimg/base:stable-20.04
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      auth:
+        username: mydockerhub-user
+        password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     - image: circleci/mysql:8.0.23
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      auth:
+        username: mydockerhub-user
+        password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
       entrypoint: ['docker-entrypoint.sh', '--default-authentication-plugin=mysql_native_password']
       environment:
         MYSQL_ROOT_PASSWORD: rootpw
