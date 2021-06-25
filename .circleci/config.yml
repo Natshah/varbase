@@ -44,22 +44,9 @@ commands:
             echo -e "max_execution_time" | sudo tee /etc/php/7.4/apache2/php.ini > /dev/null
             echo -e "max_input_time = 180" | sudo tee /etc/php/7.4/apache2/php.ini > /dev/null
             echo -e "max_input_vars = 10000" | sudo tee /etc/php/7.4/apache2/php.ini > /dev/null
-            echo -e "error_reporting = E_ALL" | sudo tee /etc/php/7.4/apache2/php.ini > /dev/null
             echo -e "post_max_size = 64M" | sudo tee /etc/php/7.4/apache2/php.ini > /dev/null
             echo -e "upload_max_filesize = 32M" | sudo tee /etc/php/7.4/apache2/php.ini > /dev/null
             echo -e "max_file_uploads = 40" | sudo tee /etc/php/7.4/apache2/php.ini > /dev/null
-            echo -e "display_errors = 1" | sudo tee /etc/php/7.4/apache2/php.ini > /dev/null
-            echo -e "display_startup_errors = 1" | sudo tee /etc/php/7.4/apache2/php.ini > /dev/null
-            sudo service apache2 restart
-
-      ## Install PHP extra.
-      - run:
-          name: Install PHP extra
-          command: |
-            sudo -E docker-php-ext-install zip
-            sudo -E docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd
-            sudo -E docker-php-ext-install mbstring bcmath pdo_mysql
-            sudo -E docker-php-ext-install gd
             sudo service apache2 restart
             
       ## Waiting for MySQL to be ready.
