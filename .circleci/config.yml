@@ -61,7 +61,7 @@ commands:
             sudo sh -c "echo 'default-authentication-plugin=mysql_native_password' >> /etc/mysql/my.cnf"
             sudo sh -c "echo 'max_allowed_packet = 32M' >> /etc/mysql/my.cnf"
             sudo sh -c "echo 'pdo_mysql.default_socket=/var/run/mysqld/mysqld.sock' > /usr/local/etc/php/conf.d/pdo.ini"
-            service mysql restart
+            sudo service mysql restart
 
       ## Install browser tools
       - browser-tools/install-browser-tools
