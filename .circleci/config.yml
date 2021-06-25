@@ -58,6 +58,7 @@ commands:
             sudo npm install -g yarn
             sudo npm install gulp-cli -g ;
             sudo npm install gulp -D ;
+            
 
       ## Waiting for MySQL to be ready.
       - run:
@@ -70,13 +71,7 @@ commands:
               sleep 1
             done
             echo Failed waiting for MySQL && exit 1
-            
-      ## Install composer ~2.1
-      - run:
-          name: Install composer ~2.1
-          command: |
-            sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin/ --filename=composer --2;
-            
+
       ## Install browser tools
       - browser-tools/install-browser-tools
 
@@ -85,6 +80,14 @@ commands:
           name: Install Java
           command: |
             sudo apt-get update && sudo apt-get install -y openjdk-11-jre openjdk-11-jre-headless openjdk-11-jdk openjdk-11-jdk-headless
+
+      ## Install composer ~2.1
+      - run:
+          name: Install composer ~2.1
+          command: |
+            sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin/ --filename=composer --2;
+            
+
 
       ## List tools versions.
       - run:
@@ -114,7 +117,7 @@ commands:
             cd /var/www/html/test/
             cp -r /home/circleci/project /var/www/html/test/varbase
             cd /var/www/html/test/varbase
-            composer install --stability dev --no-interaction
+            composer install --no-interaction
             cp -r /home/circleci/project /var/www/html/test/varbase/docroot/profiles/varbase
             sudo chmod 777 -R .;
             
