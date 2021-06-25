@@ -21,11 +21,6 @@ defaults: &defaults
 commands:
   varbase-build:
     steps:
-      - checkout:
-          path: /var/www/html/test/varbase/
-      - attach_workspace:
-          at: /var/www/html/test/varbase/docroot/
-          
       ## Install Usefull must have utils for debugging with SSH into this box.
       - run:
           name: Install Usefull must have utils for debugging with SSH into this box
@@ -36,7 +31,12 @@ commands:
             sudo apt-get -qq update
             sudo apt-get -qqy upgrade
             sudo apt-get -yqq install vim links lynx git diffutils htop curl wget p7zip-full unzip zip sed gcc g++ make libfreetype6-dev libonig-dev libjpeg62-turbo-dev libpng-dev xvfb default-mysql-client
+      - checkout:
+          path: /var/www/html/test/varbase/
+      - attach_workspace:
+          at: /var/www/html/test/varbase/docroot/
           
+
       ## Setup Apache to point varbase.test at /var/www/html/test/varbase/docroot
       - run:
           name: Setup Apache and PHP7.4to point varbase.test at /var/www/html/test/varbase/docroot
