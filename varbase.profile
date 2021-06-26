@@ -162,8 +162,7 @@ function varbase_assemble_extra_components(array &$install_state) {
     // Hide Wornings and status messages.
     $batch['operations'][] = ['varbase_hide_warning_and_status_messages', (array) TRUE];
 
-    // Fix entity updates to clear up any mismatched entity.
-    $batch['operations'][] = ['varbase_fix_entity_update', (array) TRUE];
+
   }
 
   // Install selected Demo content.
@@ -218,8 +217,7 @@ function varbase_assemble_extra_components(array &$install_state) {
     // Hide Wornings and status messages.
     $batch['operations'][] = ['varbase_hide_warning_and_status_messages', (array) TRUE];
 
-    // Fix entity updates to clear up any mismatched entity.
-    $batch['operations'][] = ['varbase_fix_entity_update', (array) TRUE];
+
 
   }
 
@@ -321,8 +319,6 @@ function varbase_assemble_development_tools(array &$install_state) {
     // Hide Wornings and status messages.
     $batch['operations'][] = ['varbase_hide_warning_and_status_messages', (array) TRUE];
 
-    // Fix entity updates to clear up any mismatched entity.
-    $batch['operations'][] = ['varbase_fix_entity_update', (array) TRUE];
   }
 
   return $batch;
@@ -368,8 +364,6 @@ function varbase_configure_multilingual(array &$install_state) {
     $batch['operations'][] = ['varbase_config_bit_for_multilingual', (array) FALSE];
   }
 
-  // Fix entity updates to clear up any mismatched entity.
-  $batch['operations'][] = ['varbase_fix_entity_update', (array) TRUE];
 
   return $batch;
 }
