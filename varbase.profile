@@ -42,7 +42,7 @@ function varbase_form_install_configure_form_alter(&$form, FormStateInterface $f
 function varbase_install_tasks(&$install_state) {
   // Determine whether the enable multiligual option is selected during the
   // Multilingual configuration task.
-  $needs_configure_multilingual = (isset($install_state['varbase']['enable_multilingual']) && $install_state['varbase']['enable_multilingual'] == TRUE);
+  $needs_configure_multilingual = (isset($install_state['varbase']) && isset($install_state['varbase']['enable_multilingual']) && $install_state['varbase']['enable_multilingual'] == TRUE);
 
   return [
     'varbase_multilingual_configuration_form' => [
@@ -162,7 +162,8 @@ function varbase_assemble_extra_components(array &$install_state) {
     // Hide Wornings and status messages.
     $batch['operations'][] = ['varbase_hide_warning_and_status_messages', (array) TRUE];
 
-
+    // Fix entity updates to clear up any mismatched entity.
+    $batch['operations'][] = ['varbase_fix_entity_update', (array) TRUE];
   }
 
   // Install selected Demo content.
@@ -217,7 +218,8 @@ function varbase_assemble_extra_components(array &$install_state) {
     // Hide Wornings and status messages.
     $batch['operations'][] = ['varbase_hide_warning_and_status_messages', (array) TRUE];
 
-
+    // Fix entity updates to clear up any mismatched entity.
+    $batch['operations'][] = ['varbase_fix_entity_update', (array) TRUE];
 
   }
 
@@ -319,6 +321,8 @@ function varbase_assemble_development_tools(array &$install_state) {
     // Hide Wornings and status messages.
     $batch['operations'][] = ['varbase_hide_warning_and_status_messages', (array) TRUE];
 
+    // Fix entity updates to clear up any mismatched entity.
+    $batch['operations'][] = ['varbase_fix_entity_update', (array) TRUE];
   }
 
   return $batch;
@@ -355,15 +359,10 @@ function varbase_configure_multilingual(array &$install_state) {
     // Hide Wornings and status messages.
     $batch['operations'][] = ['varbase_hide_warning_and_status_messages', (array) TRUE];
 
-    // Change configurations to work with enable_multilingual.
-    $batch['operations'][] = ['varbase_config_bit_for_multilingual', (array) TRUE];
-
-  }
-  else {
-    // Change configurations to work with NO multilingual.
-    $batch['operations'][] = ['varbase_config_bit_for_multilingual', (array) FALSE];
   }
 
+  // Fix entity updates to clear up any mismatched entity.
+  $batch['operations'][] = ['varbase_fix_entity_update', (array) TRUE];
 
   return $batch;
 }
@@ -418,18 +417,6 @@ function varbase_fix_entity_update($entity_update) {
       ->getInstanceFromDefinition(VarbaseEntityDefinitionUpdateManager::class)
       ->applyUpdates();
   }
-}
-
-/**
- * Batch function to update configs with config bit configurations.
- *
- * @param bool $enable_multilingual
- *   Use multilignual in the site.
- */
-function varbase_config_bit_for_multilingual($enable_multilingual) {
-
-  // Change configurations to work with enable_multilingual.
-  // Each module will manage its multilingual config.
 }
 
 /**
