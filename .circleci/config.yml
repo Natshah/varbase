@@ -50,7 +50,7 @@ commands:
             sudo -E docker-php-ext-install gd
             sudo service apache2 restart
 
-      ## Change PHP Configurations.
+      ## Change PHP Configurations
       - run:
           name: PHP Configurations
           command: |
