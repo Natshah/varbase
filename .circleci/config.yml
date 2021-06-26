@@ -17,7 +17,7 @@ defaults: &defaults
         MYSQL_DATABASE: test_varbase
         MYSQL_USER: user
         MYSQL_PASSWORD: passw0rd
-  working_directory: /var/www/html/varbase/docroot
+  working_directory: /home/circleci/project
 commands:
   varbase-build:
     steps:
