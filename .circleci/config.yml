@@ -21,7 +21,8 @@ defaults: &defaults
 commands:
   varbase-build:
     steps:
-      - checkout         
+      - checkout:
+          path: /home/circleci/project      
       ## Usefull must have utils
       - run:
           name: Usefull must have utils
