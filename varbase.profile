@@ -45,7 +45,7 @@ function varbase_install_tasks(&$install_state) {
   $needs_configure_multilingual = (isset($install_state['varbase']) && isset($install_state['varbase']['enable_multilingual']) && $install_state['varbase']['enable_multilingual'] == TRUE);
 
   return [
-    'varbase_multilingual_configuration_form' => [
+    'varbase_multilingual_configuration' => [
       'display_name' => t('Multilingual configuration'),
       'display' => TRUE,
       'type' => 'form',
