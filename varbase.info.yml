@@ -6,22 +6,26 @@ project: varbase
 distribution:
   name: Varbase
   install:
-    theme: seven
+    theme: vartheme_claro
 version: 9.0.x-dev
-dependencies:
-  - drupal:system
-  - drupal:action
-  - drupal:user
-  - drupal:node
-  - drupal:block
-  - drupal:block_content
-  - drupal:datetime
-  - drupal:help
-  - drupal:image
-  - drupal:views
-  - drupal:file
+install:
+  - system
+  - action
+  - user
+  - node
+  - block
+  - block_content
+  - datetime
+  - help
+  - image
+  - views
+  - file
 themes:
+  - bootstrap_barrio
+  - vartheme_bs4
   - seven
+  - claro
+  - vartheme_claro
 
 interface translation project: varbase
 interface translation server pattern: profiles/varbase/translations/%language.po
