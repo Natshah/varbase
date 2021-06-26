@@ -148,12 +148,6 @@
     "composer-exit-on-patch-failure": true,
     "patchLevel": {
       "drupal/core": "-p2"
-    },
-    "patches": {
-      "drupal/core": {
-        "Issue #1356276: Allow profiles to define a base/parent profile":
-        "https://www.drupal.org/files/issues/2021-05-20/3143958-14-subprofile-support-9.2.x.patch"
-      }
     }
   }
 }
