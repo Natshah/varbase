@@ -8,18 +8,19 @@ distribution:
   install:
     theme: vartheme_claro
 version: 9.0.x-dev
-install:
-  - system
-  - action
-  - user
-  - node
-  - block
-  - block_content
-  - datetime
-  - help
-  - image
-  - views
-  - file
+dependencies:
+  - drupal:system
+  - drupal:system
+  - drupal:action
+  - drupal:user
+  - drupal:node
+  - drupal:block
+  - drupal:block_content
+  - drupal:datetime
+  - drupal:help
+  - drupal:image
+  - drupal:views
+  - drupal:file
 themes:
   - bootstrap_barrio
   - vartheme_bs4
