@@ -9,17 +9,29 @@ distribution:
     theme: vartheme_claro
 version: 9.0.x-dev
 install:
-  - system
-  - action
-  - user
   - node
   - block
-  - block_content
+  - dblog
+  - page_cache
+  - dynamic_page_cache
+  - config
+  - contextual
+  - contact
+  - menu_link_content
   - datetime
+  - block_content
+  - action
+  - user
+  - editor
+  - ckeditor
   - help
   - image
+  - media
   - views
   - file
+  - menu_ui
+  - options
+  - path
 themes:
   - bootstrap_barrio
   - vartheme_bs4
