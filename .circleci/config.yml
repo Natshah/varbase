@@ -128,7 +128,7 @@ commands:
           command: |
             sudo a2enmod headers rewrite env mime expires ssl
             sudo cp /home/circleci/project/.circleci/env/varbase.test.conf /etc/apache2/sites-available/varbase.test.conf
-            sudo a2ensite varbase.test
+            sudo a2ensite varbase.test.conf
             echo 127.0.0.1 varbase.test | sudo tee -a /etc/hosts
             sudo service apache2 restart
 
