@@ -61,6 +61,8 @@ commands:
               sleep 1
             done
             echo Failed waiting for MySQL && exit 1
+            mysql -h 127.0.0.1 -uroot -ppassw0rd -e "DROP DATABASE IF EXISTS test_varbase;" -vvv
+            mysql -h 127.0.0.1 -uroot -ppassw0rd -e "CREATE DATABASE test_varbase;" -vvv
 
       ## Install node js, npm, yarn, and gulp
       - run:
@@ -86,6 +88,7 @@ commands:
           name: Install composer ~2.1
           command: |
             sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin/ --filename=composer --2;
+            composer config -g github-oauth.github.com $GITHUB_TOKEN
 
 
       ## List tools versions.
@@ -111,16 +114,20 @@ commands:
           name: Build Varbase with the composer
           no_output_timeout: 30m
           command: |
+            if [ -d "/var/www/html/test" ]; then
+              sudo rm -rf /var/www/html/test -v
+            fi
             cd /var/www/
-            sudo chmod 777 -R .;
-            composer config -g github-oauth.github.com $GITHUB_TOKEN
+            sudo chmod 777 -R .
+            sudo chown www-data:circleci -R .
             mkdir /var/www/html/test
             cd /var/www/html/test/
             cp -r /home/circleci/project /var/www/html/test/varbase
             cd /var/www/html/test/varbase
             composer install --no-interaction
             cp -r /home/circleci/project /var/www/html/test/varbase/docroot/profiles/varbase
-            sudo chmod 777 -R .;
+            sudo chmod 777 -R .
+            sudo chown www-data:circleci -R .
             
       ## Point varbase.test at /var/www/html/test/varbase/docroot
       - run:
@@ -137,8 +144,6 @@ commands:
           name: Install Varbase with drush
           no_output_timeout: 30m
           command: |
-            mysql -h 127.0.0.1 -uroot -ppassw0rd -e "DROP DATABASE IF EXISTS test_varbase;" -vvv
-            mysql -h 127.0.0.1 -uroot -ppassw0rd -e "CREATE DATABASE test_varbase;" -vvv
             cd /var/www/html/test/varbase/docroot
             ../bin/drush site-install varbase --yes --site-name='Varbase Test' --locale="en" --account-name=webmaster --account-pass=dD.123123ddd --account-mail=webmaster@vardot.com --db-url="mysql://root:passw0rd@127.0.0.1:3306/test_varbase" varbase_multilingual_configuration.enable_multilingual=true varbase_extra_components.vmi=true varbase_extra_components.varbase_heroslider_media=true varbase_extra_components.varbase_carousels=true varbase_extra_components.varbase_search=true varbase_extra_components.varbase_blog=true varbase_extra_components.varbase_auth=true  install_configure_form.enable_update_status_emails=NULL --debug
             ../bin/drush pm-enable varbase_development --yes
