@@ -88,29 +88,16 @@ commands:
               sudo rm -rf /var/www/html/test -vvv
             fi
             cd /var/www/
-            sudo chmod 777 -R /var/www
-            sudo chown www-data:circleci -R /var/www
             mkdir /var/www/html/test
+            sudo chmod 775 -R .
+            sudo chown www-data:circleci -R .
             cd /var/www/html/test/
             composer create-project vardot/varbase:9.0.x varbase --stability dev --no-interaction -vvv
             cp -r /home/circleci/project /var/www/html/test/varbase/docroot/profiles/varbase
-            sudo rm -rf /var/www/html/test/varbase/config \
-            /var/www/html/test/varbase/configbit \
-            /var/www/html/test/varbase/css \
-            /var/www/html/test/varbase/images \
-            /var/www/html/test/varbase/libraries \
-            /var/www/html/test/varbase/scripts \
-            /var/www/html/test/varbase/src \
-            /var/www/html/test/varbase/tests \
-            /var/www/html/test/varbase/traslations \
-            /var/www/html/test/varbase/varbase.info.yml \
-            /var/www/html/test/varbase/varbase.install \
-            /var/www/html/test/varbase/varbase.libraries.yml \
-            /var/www/html/test/varbase/varbase.profile \
-            /var/www/html/test/varbase/varbase.services.yml \
-            /var/www/html/test/varbase/yarn.lock \
-            sudo chmod 777 -R /var/www/html/test
-            sudo chown www-data:circleci -R /var/www/html/test
+            cd /var/www/html/test/varbase
+            sudo rm -rf config configbit css images libraries scripts src tests traslations varbase.info.yml varbase.install varbase.libraries.yml varbase.profile varbase.services.yml yarn.lock
+            sudo chmod 775 -R .
+            sudo chown www-data:circleci -R .
             
       ## Point varbase.test at /var/www/html/test/varbase/docroot
       - run:
@@ -118,7 +105,7 @@ commands:
           command: |
             sudo a2enmod headers rewrite env mime expires ssl
             sudo cp /home/circleci/project/.circleci/env/varbase.test.conf /etc/apache2/sites-available/varbase.test.conf
-            sudo a2ensite varbase.test
+            sudo a2ensite varbase.test.conf
             echo 127.0.0.1 varbase.test | sudo tee -a /etc/hosts
             sudo service apache2 restart
 
