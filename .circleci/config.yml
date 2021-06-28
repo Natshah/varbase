@@ -48,6 +48,14 @@ commands:
             echo -e "post_max_size = 64M" | sudo tee /etc/php/7.4/apache2/php.ini > /dev/null
             echo -e "upload_max_filesize = 32M" | sudo tee /etc/php/7.4/apache2/php.ini > /dev/null
             echo -e "max_file_uploads = 40" | sudo tee /etc/php/7.4/apache2/php.ini > /dev/null
+            echo -e "memory_limit = -1" | sudo tee /etc/php/7.4/cli/php.ini > /dev/null
+            echo -e "max_execution_time = 1200" | sudo tee /etc/php/7.4/cli/php.ini > /dev/null
+            echo -e "error_reporting = E_ALL" | sudo tee /etc/php/7.4/cli/php.ini > /dev/null
+            echo -e "max_input_time = 180" | sudo tee /etc/php/7.4/cli/php.ini > /dev/null
+            echo -e "max_input_vars = 10000" | sudo tee /etc/php/7.4/cli/php.ini > /dev/null
+            echo -e "post_max_size = 64M" | sudo tee /etc/php/7.4/cli/php.ini > /dev/null
+            echo -e "upload_max_filesize = 32M" | sudo tee /etc/php/7.4/cli/php.ini > /dev/null
+            echo -e "max_file_uploads = 40" | sudo tee /etc/php/7.4/cli/php.ini > /dev/null
             sudo service apache2 restart
   
       ## Waiting for MySQL to be ready.
@@ -61,8 +69,6 @@ commands:
               sleep 1
             done
             echo Failed waiting for MySQL && exit 1
-            mysql -h 127.0.0.1 -uroot -ppassw0rd -e "DROP DATABASE IF EXISTS test_varbase;" -vvv
-            mysql -h 127.0.0.1 -uroot -ppassw0rd -e "CREATE DATABASE test_varbase;" -vvv
 
       ## Install node js, npm, yarn, and gulp
       - run:
@@ -88,7 +94,6 @@ commands:
           name: Install composer ~2.1
           command: |
             sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin/ --filename=composer --2;
-            composer config -g github-oauth.github.com $GITHUB_TOKEN
 
 
       ## List tools versions.
@@ -114,20 +119,16 @@ commands:
           name: Build Varbase with the composer
           no_output_timeout: 30m
           command: |
-            if [ -d "/var/www/html/test" ]; then
-              sudo rm -rf /var/www/html/test -v
-            fi
             cd /var/www/
-            sudo chmod 777 -R .
-            sudo chown www-data:circleci -R .
+            sudo chmod 777 -R .;
+            composer config -g github-oauth.github.com $GITHUB_TOKEN
             mkdir /var/www/html/test
             cd /var/www/html/test/
             cp -r /home/circleci/project /var/www/html/test/varbase
             cd /var/www/html/test/varbase
             composer install --no-interaction
             cp -r /home/circleci/project /var/www/html/test/varbase/docroot/profiles/varbase
-            sudo chmod 777 -R .
-            sudo chown www-data:circleci -R .
+            sudo chmod 777 -R .;
             
       ## Point varbase.test at /var/www/html/test/varbase/docroot
       - run:
@@ -135,7 +136,7 @@ commands:
           command: |
             sudo a2enmod headers rewrite env mime expires ssl
             sudo cp /home/circleci/project/.circleci/env/varbase.test.conf /etc/apache2/sites-available/varbase.test.conf
-            sudo a2ensite varbase.test.conf
+            sudo a2ensite varbase.test
             echo 127.0.0.1 varbase.test | sudo tee -a /etc/hosts
             sudo service apache2 restart
 
@@ -144,8 +145,9 @@ commands:
           name: Install Varbase with drush
           no_output_timeout: 30m
           command: |
+            mysql -h 127.0.0.1 -uroot -ppassw0rd -e "DROP DATABASE IF EXISTS test_varbase;CREATE DATABASE test_varbase;"
             cd /var/www/html/test/varbase/docroot
-            ../bin/drush site-install varbase --yes --site-name='Varbase Test' --locale="en" --account-name=webmaster --account-pass=dD.123123ddd --account-mail=webmaster@vardot.com --db-url="mysql://root:passw0rd@127.0.0.1:3306/test_varbase" install_configure_form.enable_update_status_emails=NULL --debug
+            ../bin/drush site-install varbase --yes --site-name='Varbase Test' --account-name=webmaster --account-pass=dD.123123ddd --account-mail=webmaster@vardot.com --db-url="mysql://root:passw0rd@127.0.0.1:3306/test_varbase" varbase_multilingual_configuration.enable_multilingual=true varbase_extra_components.vmi=true varbase_extra_components.varbase_heroslider_media=true varbase_extra_components.varbase_carousels=true varbase_extra_components.varbase_search=true varbase_extra_components.varbase_blog=true varbase_extra_components.varbase_auth=true
             ../bin/drush pm-enable varbase_development --yes
             ../bin/drush pm-enable varbase_styleguide --yes
             ../bin/drush pm-enable varbase_landing --yes
