@@ -11,11 +11,16 @@ defaults: &defaults
       auth:
         username: mydockerhub-user
         password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      command: [mysqld, --default-authentication-plugin=mysql_native_password, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --innodb_monitor_enable=all, --max-connections=1001]
       environment:
         MYSQL_ROOT_PASSWORD: rootpw
+        MYSQL_ROOT_HOST: "%"
         MYSQL_DATABASE: test_varbase
         MYSQL_USER: user
         MYSQL_PASSWORD: passw0rd
+      ports:
+        - "3306:3306"
+        - "33060:33060"
 commands:
   varbase-build:
     steps:
@@ -103,6 +108,8 @@ commands:
       - run:
           name: Install Varbase with drush
           command: |
+            mysql -h 127.0.0.1 -uroot -prootpw --execute="DROP DATABASE IF EXISTS test_varbase;" -vvv
+            mysql -h 127.0.0.1 -uroot -prootpw --execute="CREATE DATABASE test_varbase;" -vvv
             cd /var/www/html/test/varbase/docroot
             ../bin/drush site-install varbase --yes --site-name='Varbase Test' --account-name=webmaster --account-pass=dD.123123ddd --account-mail=webmaster@vardot.com --db-url="mysql://root:rootpw@127.0.0.1:3306/test_varbase" --locale="en" varbase_multilingual_configuration.enable_multilingual=true varbase_extra_components.vmi=true varbase_extra_components.varbase_heroslider_media=true varbase_extra_components.varbase_carousels=true varbase_extra_components.varbase_search=true varbase_extra_components.varbase_blog=true varbase_extra_components.varbase_auth=true install_configure_form.enable_update_status_emails=NULL --debug -vvv
             ../bin/drush pm-enable varbase_development --yes
