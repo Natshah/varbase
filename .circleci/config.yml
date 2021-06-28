@@ -32,6 +32,7 @@ commands:
       - run:
           name: Install/Update Google Chrome browser
           command: |
+            sudo apt-get install libnss3:i386 libcurl3
             sudo apt-get install libgconf2-4 libnss3-1d libxss1
             export CHROME_BIN=/usr/bin/google-chrome
             wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
