@@ -11,7 +11,7 @@ defaults: &defaults
       auth:
         username: mydockerhub-user
         password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-      command: [mysqld, --default-authentication-plugin=mysql_native_password, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --innodb_monitor_enable=all, --max-connections=1001]
+      entrypoint: ['docker-entrypoint.sh', '--default-authentication-plugin=mysql_native_password']
       environment:
         MYSQL_ROOT_PASSWORD: rootpw
         MYSQL_ROOT_HOST: "%"
