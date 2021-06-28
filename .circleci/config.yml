@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-  browser-tools: circleci/browser-tools@1.1
 defaults: &defaults
   docker:
     - image: cimg/base:stable-20.04
@@ -162,6 +160,30 @@ commands:
           command: |
             sudo apt update
             sudo apt install -y openjdk-8-jre openjdk-8-jre-headless openjdk-8-jdk openjdk-8-jdk-headless
+
+      ## Install/Update Google Chrome browser.
+      - run:
+          name: Install/Update Google Chrome browser
+          command: |
+            export CHROME_BIN=/usr/bin/google-chrome
+            wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            sudo apt-get clean
+            sudo apt-get update
+            sudo apt-get install dpkg
+            sudo dpkg -i google-chrome-stable_current_amd64.deb
+            rm google-chrome-stable_current_amd64.deb
+
+      ## Install/Update Chrome Driver.
+      - run:
+          name: Install/Update Chrome Driver
+          command: |
+            CHROME_DRIVER_VERSION=$(wget -qO- chromedriver.storage.googleapis.com/LATEST_RELEASE);
+            echo $CHROME_DRIVER_VERSION;
+            wget http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
+            unzip chromedriver_linux64.zip
+            sudo chmod +x chromedriver
+            sudo mv -f chromedriver /usr/bin/
+            rm chromedriver_linux64.zip
 
       ## List tools versions.
       - run:
