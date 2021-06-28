@@ -32,14 +32,10 @@ commands:
       - run:
           name: Install/Update Google Chrome browser
           command: |
-            sudo apt-get install libgconf2-4 libnss3 libnss3-1d libxss1
-            export CHROME_BIN=/usr/bin/google-chrome
-            wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-            sudo apt-get clean
-            sudo apt-get update
-            sudo apt-get install dpkg
-            sudo dpkg -i google-chrome-stable_current_amd64.deb
-            rm google-chrome-stable_current_amd64.deb
+            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
+            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+            sudo apt update 
+            sudo apt install google-chrome-stable 
 
       ## Install/Update Chrome Driver.
       - run:
