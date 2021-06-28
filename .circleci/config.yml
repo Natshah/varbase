@@ -156,7 +156,7 @@ commands:
           name: Install Java
           command: |
             sudo apt update
-            sudo apt install -y openjdk-8-jre openjdk-8-jre-headless openjdk-8-jdk openjdk-8-jdk-headless
+            sudo apt install -y openjdk-11-jre openjdk-11-jre-headless openjdk-11-jdk openjdk-11-jdk-headless
 
       ## Install/Update Google Chrome browser.
       - run:
