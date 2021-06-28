@@ -209,7 +209,7 @@ commands:
       - run:
           name: Run selenium standalone server
           command: |
-            if [[ ! -f /home/circleci/selenium-server-standalone-2.53.2.jar ]]; then wget -O /home/circleci/selenium-server-standalone-3.9.1.jar http://selenium-release.storage.googleapis.com/3.9/selenium-server-standalone-3.9.1.jar; fi
+            if [[ ! -f /home/circleci/selenium-server-standalone-3.9.1.jar ]]; then wget -O /home/circleci/selenium-server-standalone-3.9.1.jar http://selenium-release.storage.googleapis.com/3.9/selenium-server-standalone-3.9.1.jar; fi
             cd /home/circleci/
             java -jar selenium-server-standalone-3.9.1.jar -port 4445 > /home/circleci/selenium.log
           background: true
