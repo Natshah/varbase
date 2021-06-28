@@ -11,9 +11,3 @@ config_bit:
       dependencies:
         # Enable listed Varbase modules in order at this installation step.
         - varbase_core
-        - varbase_media
-        - varbase_editor
-        - varbase_workflow
-        - varbase_layout_builder
-        - vlplb
-        - varbase_default_content
