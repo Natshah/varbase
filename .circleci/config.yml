@@ -91,16 +91,16 @@ commands:
             sudo chmod 775 -R .
             sudo chown www-data:circleci -R .
             cp /var/www/html/test/varbase/docroot/sites/default/default.settings.php /var/www/html/test/varbase/docroot/sites/default/settings.php
-            echo "\$databases['default']['default'] = array (
+            echo "\$databases['default']['default'] = [
               'database' => 'test_varbase',
               'username' => 'root',
               'password' => 'rootpw',
-              'prefix' => '',
-              'host' => '123___',
+              'host' => '127.0.0.1',
               'port' => '3306',
-              'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
               'driver' => 'mysql',
-            );" >> /var/www/html/test/varbase/docroot/sites/default/settings.php
+              'prefix' => '',
+              'collation' => 'utf8mb4_general_ci',
+            ];" >> /var/www/html/test/varbase/docroot/sites/default/settings.php
             mkdir /var/www/html/test/varbase/config
             mkdir /var/www/html/test/varbase/config/sync
             echo "\$settings['config_sync_directory'] = '../config/sync';" >> /var/www/html/test/varbase/docroot/sites/default/settings.php
