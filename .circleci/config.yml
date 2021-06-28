@@ -28,27 +28,6 @@ commands:
             sudo apt -qqy upgrade
             sudo apt -yqq install vim links lynx git diffutils htop curl wget p7zip-full unzip zip sed gcc g++ make libfreetype6-dev libaio1 libaio-dev libonig-dev libpng-dev xvfb mysql-client default-mysql-client
 
-      ## Install/Update Google Chrome browser.
-      - run:
-          name: Install/Update Google Chrome browser
-          command: |
-            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
-            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-            sudo apt update 
-            sudo apt install google-chrome-stable 
-
-      ## Install/Update Chrome Driver.
-      - run:
-          name: Install/Update Chrome Driver
-          command: |
-            CHROME_DRIVER_VERSION=$(wget -qO- chromedriver.storage.googleapis.com/LATEST_RELEASE);
-            echo $CHROME_DRIVER_VERSION;
-            wget http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
-            unzip chromedriver_linux64.zip
-            sudo chmod +x chromedriver
-            sudo mv -f chromedriver /usr/bin/
-            rm chromedriver_linux64.zip
-
       ## Setup Apache2 to PHP7.4
       - run:
           name: Setup Apache2 and PHP7.4
@@ -178,6 +157,28 @@ commands:
           command: |
             sudo apt update
             sudo apt install -y openjdk-8-jre openjdk-8-jre-headless openjdk-8-jdk openjdk-8-jdk-headless
+
+      ## Install/Update Google Chrome browser.
+      - run:
+          name: Install/Update Google Chrome browser
+          command: |
+            sudo apt-get install libxss1 libappindicator1 libindicator7
+            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
+            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+            sudo apt update 
+            sudo apt install google-chrome-stable 
+
+      ## Install/Update Chrome Driver.
+      - run:
+          name: Install/Update Chrome Driver
+          command: |
+            CHROME_DRIVER_VERSION=$(wget -qO- chromedriver.storage.googleapis.com/LATEST_RELEASE);
+            echo $CHROME_DRIVER_VERSION;
+            wget http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
+            unzip chromedriver_linux64.zip
+            sudo chmod +x chromedriver
+            sudo mv -f chromedriver /usr/bin/
+            rm chromedriver_linux64.zip
 
       ## List tools versions.
       - run:
