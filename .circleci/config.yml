@@ -141,9 +141,6 @@ commands:
             ../bin/drush config-set system.logging error_level all --yes
             ../bin/drush cr
 
-      ## Install browser tools
-      - browser-tools/install-browser-tools
-
       ## Install node js, npm, yarn, and gulp
       - run:
           name: Install node js
