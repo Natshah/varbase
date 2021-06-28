@@ -13,7 +13,6 @@ config_bit:
         - varbase_core
         - varbase_media
         - varbase_editor
-        - varbase_admin
         - varbase_workflow
         - varbase_layout_builder
         - vlplb
