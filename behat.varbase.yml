@@ -87,7 +87,7 @@ default:
               - "ignore-certificate-errors"
               - "disable-infobars"
               - "js-flags=--expose-gc"
-      base_url: 'http://localhost/test/varbase/docroot'
+      base_url: 'http://varbase.test'
       # browser_name: 'firefox'
       browser_name: 'chrome'
       # browser_name: 'phantomjs'
