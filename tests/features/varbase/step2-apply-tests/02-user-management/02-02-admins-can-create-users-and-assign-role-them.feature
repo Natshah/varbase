@@ -18,8 +18,8 @@ So that they will be able to use the site.
       And I should see "Registered date (from)"
       And I should see "Registered date (to)"
       And I should see "Username"
-      And I should see "Member for"
-      And I should see "Last access"
+      And I should see "view-created-table-column"
+      And I should see "view-access-table-column"
       And I should see "Operations"
 
   @javascript @local @development @staging @production

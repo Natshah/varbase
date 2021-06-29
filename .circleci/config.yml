@@ -161,7 +161,6 @@ commands:
             cd /var/www/html/test/varbase
             sudo chmod 775 -R .
             sudo chown www-data:circleci -R .
-            cat /var/www/html/test/varbase/docroot/sites/default/settings.php
                       
       ## Point varbase.test at /var/www/html/test/varbase/docroot
       - run:
