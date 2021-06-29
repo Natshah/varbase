@@ -199,11 +199,9 @@ commands:
 
       ## Configure and run the virtual display.
       - run:
-          name: Configure and run the virtual display
-          command: |
-            export DISPLAY=:99
-            xvfb :99 -ac -screen 0 1366x768x24 &>/dev/null &
-            sleep 3
+          name: Configure and run the virtual display.
+          command: Xvfb -ac :99 -screen 0 1024x768x24 > /dev/null 2>&1
+          background: true
 
       ## Run selenium standalone server.
       - run:
