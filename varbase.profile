@@ -511,15 +511,11 @@ function varbase_after_install_finished(array &$install_state) {
 
   // Import managed config to the active config at this time of install.
   $profile_path_managed = drupal_get_path('profile', 'varbase') . '/config/managed/';
-  $managed_configs_files = \Drupal::service('file_system')->scanDirectory($profile_path_managed, '/^.*(.yml)$/i');
-  if (isset($managed_configs_files) && is_array($managed_configs_files)) {
-    foreach ($managed_configs_files as $managed_config_file) {
-      $managed_config_file_content = file_get_contents(DRUPAL_ROOT . '/' . $managed_config_file->uri);
-      $managed_config_file_data = (array) Yaml::parse($managed_config_file_content);
-      $managed_config_factory = \Drupal::configFactory()->getEditable($managed_config_file->name);
-      $managed_config_factory->setData($managed_config_file_data)->save(TRUE);
-    }
-  }
+  $managed_config_path = $profile_path_managed . 'block.block.vartheme_bs4_copyright.yml';
+  $managed_config_content = file_get_contents($managed_config_path);
+  $managed_config_data = (array) Yaml::parse($managed_config_content);
+  $managed_config_factory = \Drupal::configFactory()->getEditable('block.block.vartheme_bs4_copyright');
+  $managed_config_factory->setData($managed_config_data)->save(TRUE);
 
   // Entity updates to clear up any mismatched entity and/or field definitions
   // And Fix changes were detected in the entity type and field definitions.
