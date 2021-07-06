@@ -12944,7 +12944,7 @@
                 },
                 "drupal": {
                     "version": "9.0.5+2-dev",
-                    "datestamp": "1625502812",
+                    "datestamp": "1625504322",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -13311,7 +13311,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/varbase_layout_builder.git",
-                "reference": "299d12759e59182fa63a047e005f84aba40d169a"
+                "reference": "ae455336ef19b640d59c43174864eaabfa9b6fe1"
             },
             "require": {
                 "composer/installers": "~1.0 || ~2.0",
@@ -13611,8 +13611,8 @@
                     "dev-9.0.x": "9.0.x-dev"
                 },
                 "drupal": {
-                    "version": "9.0.0-alpha2+2-dev",
-                    "datestamp": "1619257708",
+                    "version": "9.0.0+1-dev",
+                    "datestamp": "1625510732",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
